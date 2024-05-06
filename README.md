@@ -69,12 +69,12 @@ which terraform
 
 ### Step 2 → Building a simple Infrastructure from code using terraform
 
-a. Clone this repository to your local machine.
+1. Clone this repository to your local machine.
 
 ``` 
 git clone https://github.com/vinod-kha/Amazon-deployment.git
 ```
-open the file and edit.
+open the file and edit
 vim Main.tf
 ```
 resource "aws_security_group" "Jenkins-sg" {
@@ -124,11 +124,11 @@ resource "aws_instance" "web" {
 }
 
 ```
-b. change this section → ami = # your ami id , key_name= #your key pair if any
+2. change this section → ami = # your ami id , key_name= #your key pair if any
 (main.tf includes userdata which links install_jenkins.sh file on which execution install jenkins,docker,trivy,and start the sonarqube container on port 9000)
-c. Navigate to the `terraform/` directory.
-d. Run `terraform init` to initialize Terraform.
-e. Run `terraform apply` to create the EC2 instance and security group.
+4. Navigate to the `terraform/` directory.
+5. Run `terraform init` to initialize Terraform.
+6. Run `terraform apply` to create the EC2 instance and security group.
 
 ```
 terraform init
@@ -136,21 +136,20 @@ terraform validate
 terraform plan
 terraform apply --auto-approve
 ```
-
 Go to your aws console and checkout the ec2 instances
-
-** Here we see amazon app instance is created by terraform with the given configuration**
+**Here we see amazon app instance is created by terraform with the given configuration**
 
 ### Step 3 → Setup Sonarqube and jenkins
 
-1.  Sonarqube →
-copy the public ip of your machine
-  1. go to your browser and type →<publicip>:9000
-  2. iniatially username and password is admin
-  3. update your password
-  4. welcome window of Sonarqube
+**1.  Sonarqube →**
+  1. copy the public ip of your machine
+  2. go to your browser and type →<publicip>:9000
+  3. iniatially username and password is admin
+  4. update your password
+  5. welcome window of Sonarqube
      
-2. Jenkins →
+**2. Jenkins →**
+
    1. on browser type →<public_ip>:8080
    2. for this go to your ec2 and connect it
    3. run the below commands
@@ -165,7 +164,7 @@ copy the public ip of your machine
 
 ### Step 4 → ci-cd pipeline
 
-** 1. Install Plugins listed below**
+**1. Install Plugins listed below**
    1. Eclipse Temurin Installer (Install without restart)
    2. SonarQube Scanner (Install without restart)
    3. NodeJs Plugin (Install Without restart)
@@ -173,7 +172,7 @@ copy the public ip of your machine
    5. Prometheus metrics →to moniter jenkins on grafana dashboard
    6. Download all the docker realated plugins
     
-** 2. add credentials of Sonarqube and Docker**
+**2. add credentials of Sonarqube and Docker**
 1st we genrate a token for sonarqube to use in jenkins credentials as secret text
 
 **a. setup sonarqube credentials**
@@ -192,9 +191,9 @@ copy the public ip of your machine
 3.  in the name field type <Your project name>
 4.  click on set up
    
-**Sonarqube project for jenkins is setup now**
+**Note: Sonarqube project for jenkins is setup now**
 
-** c. Setup docker credentials**
+**c. Setup docker credentials**
 1. go to your jenkins →manage jenkins →credentials →global →add credentials
 2. provide your username and password of your dockerhub
 3. id==docker
@@ -202,7 +201,7 @@ copy the public ip of your machine
 **3. Now we are going to setup tools for jenkins**
 go to manage jenkins → tools
 
-** a. add jdk**
+**a. add jdk**
 1. click on add jdk and select installer adoptium.net
 2. choose jdk 17.0.8.1+1version and in name section enter jdk 17
 
@@ -221,6 +220,7 @@ add sonar scanner
 name ==sonar-scanner
 
 **e. add owasp dependency check**
+
 Adding the Dependency-Check plugin in the “Tools” section of Jenkins allows you to perform automated security checks on the dependencies used by your application
 
 1. add dependency check
@@ -232,7 +232,9 @@ Adding the Dependency-Check plugin in the “Tools” section of Jenkins allows 
 2. name ==sonar-server
 3. server_url==http://public_ip:9000
 4. server authentication token == jenkins →it is created in sonarqube security configurations
-** 4. let’s run the Pipeline →**
+   
+   **let’s run the Pipeline**
+   
 1. go to new item →select pipeline →in the name section type amazon-pipeline
 2. scroll down to the pipeline script and copy paste the following code
 
@@ -318,5 +320,6 @@ pipeline{
 6. owasp dependency check result
 7. After a lot of error we did it
 8. Now our docker image is build,push and deployed into a container and our app is live and running on port no. 3000
-**to check →http://<your-public-ip>:3000**
+**to check →http://<your-public-ip>:3000**.
+
 **Here’s is our amazon app**
