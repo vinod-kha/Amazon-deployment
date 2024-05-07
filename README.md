@@ -1,4 +1,4 @@
-# Deploying Amazon Webpage in Docker Container with Terraform, AWS EC2 , Jenkins, SonarQube, OWASP Dependency Check, and Docker.
+# Deployment of Amazon clone app using Terraform and jenkins ci-cd
 
 ## Overview
 
@@ -340,6 +340,7 @@ go to ec2 console and launch an instance having a base image ofu buntu and with 
       wget https://github.com/prometheus/prometheus/releases/download/v2.47.1/prometheus-2.47.1.linux-amd64.tar.gz
        ```
    2. Extract Prometheus files, move them, and create directories:
+      
       ```
       tar -xvf prometheus-2.47.1.linux-amd64.tar.gz
       cd prometheus-2.47.1.linux-amd64/
@@ -348,19 +349,21 @@ go to ec2 console and launch an instance having a base image ofu buntu and with 
       sudo mv consoles/ console_libraries/ /etc/prometheus/
       sudo mv prometheus.yml /etc/prometheus/prometheus.yml
      ```
+     
    3. Set ownership for directories:
+      
       ```
       useradd prometheus
       sudo chown -R prometheus:prometheus /etc/prometheus/ /data/
       ```
-   4. Create a systemd unit configuration file for Prometheus:
+   5. Create a systemd unit configuration file for Prometheus:
 
       ```
       sudo nano /etc/systemd/system/prometheus.service
       ```
       
       Add the following code to the prometheus.service file:
-
+      
       ```
       [Unit]
       Description=Prometheus
@@ -395,7 +398,7 @@ Here’s a explanation of the key parts in this above file:
 * web.listen-address configures Prometheus to listen on all network interfaces on port 9090.
 * web.enable-lifecycle allows for management of Prometheus through API calls.
 
-**5. Enable and start Prometheus:**
+   **5. Enable and start Prometheus:**
 
 ```
 sudo systemctl enable prometheus
@@ -530,11 +533,12 @@ WantedBy=default.target
       * Select “Data Sources.”
       * Click on the “Add data source” button.
       * Choose “Prometheus” as the data source type.
-      *In the “HTTP” section:
-      *Set the “URL” to http://localhost:9090 (assuming Prometheus is running on the same server).
-      *Click the “Save & Test” button to ensure the data source is working.
+      * In the “HTTP” section.
+      * Set the “URL” to http://localhost:9090 (assuming Prometheus is running on the same server).
+      * Click the “Save & Test” button to ensure the data source is working.
    8. Import a Dashboard
-      Importing a dashboard in Grafana is like using a ready-made template to quickly create a set of charts and graphs for monitoring your data, without having to build them from             scratch.
+      Importing a dashboard in Grafana is like using a ready-made template to quickly create a set of charts and graphs for monitoring 
+      your data, without having to build them from scratch.
 
       * Click on the “+” (plus) icon in the left sidebar to open the “Create” menu.
       * Select “Dashboard.”
@@ -547,15 +551,16 @@ WantedBy=default.target
       go to manage jenkins →system →search for promotheus — apply →save
       
    11. import a dashboard for jenkins
-      * Click on the “+” (plus) icon in the left sidebar to open the “Create” menu.
+       
+      * Click on the “+” (plus) icon in the left sidebar to open the “Create” menu
       * Select “Dashboard.”
-      * Click on the “Import” dashboard option.
-      * Enter the dashboard code you want to import (e.g., code 9964).
-      * Click the “Load” button.
-      * Select the data source you added (Prometheus) from the dropdown.
+      * Click on the “Import” dashboard option
+      * Enter the dashboard code you want to import (e.g., code 9964)
+      * Click the “Load” button
+      * Select the data source you added (Prometheus) from the dropdown
 
 
-###Step 7 → Terraform Destroy
+### Step 6 → Terraform Destroy
 
 go to your terminal and run
 ```
