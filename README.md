@@ -348,7 +348,7 @@ go to ec2 console and launch an instance having a base image ofu buntu and with 
       sudo mv prometheus promtool /usr/local/bin/
       sudo mv consoles/ console_libraries/ /etc/prometheus/
       sudo mv prometheus.yml /etc/prometheus/prometheus.yml
-     ```
+     
      
    3. Set ownership for directories:
       
